@@ -26,6 +26,8 @@ const ShowListPage: FC<showListPageProps> = ({
   showsQuery,
   loading,
 }) => {
+  console.log("shows", shows);
+
   return (
     <div className="mt-2">
       <div className="flex items-center ">

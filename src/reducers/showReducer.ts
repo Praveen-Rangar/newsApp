@@ -36,14 +36,18 @@ function showReducer(state = initialState, action: AnyAction): State {
 
         const normalizedData = normalize(shows, [showSchema]);
         draft.loading = false;
+        console.log("normalizedData", normalizedData);
+
+        console.log("draft.query", draft.query);
 
         draft.query_shows[draft.query] = normalizedData.result;
-        console.log("normalizedData", normalizedData);
+        // console.log("normalizedData", draft.query_shows[draft.query]);
 
         draft.shows = {
           ...draft.shows,
           ...normalizedData.entities.shows,
         };
+        console.log(" draft.shows", draft.shows);
       });
 
     case SHOWS_QUERY_CHANGE:

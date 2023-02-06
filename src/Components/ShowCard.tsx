@@ -1,5 +1,7 @@
+import { Avatar, AvatarGroup, Stack } from "@mui/material";
 import { FC } from "react";
 import { Link } from "react-router-dom";
+import { Cast } from "../models/Cast";
 import { Show } from "../models/show";
 
 type ShowCardProps = {
@@ -7,6 +9,9 @@ type ShowCardProps = {
 };
 
 const ShowCard: FC<ShowCardProps> = ({ show }) => {
+  // const show = showsObject.show;
+  // const Cast = showsObject.cast;
+
   return (
     <div className="max-w-xs rounded-md shadow-md p-2 m-1">
       <img
@@ -21,7 +26,7 @@ const ShowCard: FC<ShowCardProps> = ({ show }) => {
       <div className="flex flex-col justify-between p-6 space-y-8">
         <div className="space-y-2">
           <h2 className="text-3xl font-semibold tracking-wide">{show.name}</h2>
-          <p>{show.summary}</p>
+          <p dangerouslySetInnerHTML={{ __html: show.summary || "" }}></p>
         </div>
         <Link
           to={"/show/" + show.id}
@@ -29,6 +34,20 @@ const ShowCard: FC<ShowCardProps> = ({ show }) => {
         >
           View Details
         </Link>
+        {/* <Stack spacing={4}>
+          <Stack direction="row">
+            <AvatarGroup max={4}>
+              {Cast.map((item: Cast) => (
+                <div key={item.id}>
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={item.image?.medium || item.image?.original}
+                  />
+                </div>
+              ))}
+            </AvatarGroup>
+          </Stack>
+        </Stack> */}
       </div>
     </div>
   );

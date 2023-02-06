@@ -9,15 +9,20 @@ import { connect } from "react-redux";
 import { showIdChangeAction } from "../actions/showDetails";
 import { State } from "../store";
 import {
+  castSelector,
   showMapSelector,
   showsLoadingDetailsSelector,
   showsLoadingSelector,
 } from "../selectors/shows";
 import LoadingSpinner from "../Components/LoadingSpinner";
+import { showCastIdChangeAction } from "../actions/showCast";
+import { Cast } from "../models/Cast";
 
 type ShowDetailPageProps = {
   show: Show;
   showIdChange: (showId: number) => void;
+  showCastIdChange: (castId: number) => void;
+  cast: Cast[];
   loading: boolean;
 } & WithRouterProps;
 
@@ -25,13 +30,16 @@ const ShowDetailPage: FC<ShowDetailPageProps> = ({
   params,
   showIdChange,
   show,
+  cast,
   loading,
+  showCastIdChange,
 }) => {
   const showId = params.showId;
-  console.log("showId", showId);
+  console.log("cast", cast);
 
   useEffect(() => {
     showIdChange(+showId);
+    showCastIdChange(+showId);
   }, [showId]);
 
   if (!show) {
@@ -75,54 +83,17 @@ const ShowDetailPage: FC<ShowDetailPageProps> = ({
       <div className="mt-2">
         <h4 className="text-2xl font-semibold tracking-wide">Cast</h4>
         <div className="flex flex-wrap">
-          <CastCard
-            avatarLink="https://static.tvmaze.com/uploads/images/medium_portrait/218/545468.jpg"
-            name="Henry Cavill"
-          />
-          <CastCard
-            avatarLink="https://static.tvmaze.com/uploads/images/medium_portrait/218/545472.jpg"
-            name="Freya Allan"
-          />
-          <CastCard
-            avatarLink="https://static.tvmaze.com/uploads/images/medium_portrait/218/545470.jpg"
-            name="Anya Chalotra"
-          />
-          <CastCard
-            avatarLink="https://static.tvmaze.com/uploads/images/medium_portrait/232/581040.jpg"
-            name="Mimi Ndiweni"
-          />
-          <CastCard
-            avatarLink="https://static.tvmaze.com/uploads/images/medium_portrait/218/545468.jpg"
-            name="Henry Cavill"
-          />
-          <CastCard
-            avatarLink="https://static.tvmaze.com/uploads/images/medium_portrait/218/545472.jpg"
-            name="Freya Allan"
-          />
-          <CastCard
-            avatarLink="https://static.tvmaze.com/uploads/images/medium_portrait/218/545470.jpg"
-            name="Anya Chalotra"
-          />
-          <CastCard
-            avatarLink="https://static.tvmaze.com/uploads/images/medium_portrait/232/581040.jpg"
-            name="Mimi Ndiweni"
-          />
-          <CastCard
-            avatarLink="https://static.tvmaze.com/uploads/images/medium_portrait/218/545468.jpg"
-            name="Henry Cavill"
-          />
-          <CastCard
-            avatarLink="https://static.tvmaze.com/uploads/images/medium_portrait/218/545472.jpg"
-            name="Freya Allan"
-          />
-          <CastCard
-            avatarLink="https://static.tvmaze.com/uploads/images/medium_portrait/218/545470.jpg"
-            name="Anya Chalotra"
-          />
-          <CastCard
-            avatarLink="https://static.tvmaze.com/uploads/images/medium_portrait/232/581040.jpg"
-            name="Mimi Ndiweni"
-          />
+          {cast.map((item: Cast) => (
+            <CastCard
+              key={item.id}
+              avatarLink={
+                item.image?.medium ||
+                item.image?.original ||
+                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+              }
+              name={item.name}
+            />
+          ))}
         </div>
       </div>
     </div>
@@ -131,11 +102,13 @@ const ShowDetailPage: FC<ShowDetailPageProps> = ({
 
 const mapDispatchToProps = {
   showIdChange: showIdChangeAction,
+  showCastIdChange: showCastIdChangeAction,
 };
 
 const mapStateToProps = (state: State, ownProps: WithRouterProps) => {
   return {
     show: showMapSelector(state)[+ownProps.params.showId],
+    cast: castSelector(state),
     loading: showsLoadingSelector(state),
   };
 };

@@ -3,6 +3,8 @@ import { State } from "../store";
 
 const showsStateSelector = (state: State) => state.shows;
 
+const castStateSelector = (state: State) => state.cast;
+
 export const showsQuerySelector = createSelector(
   showsStateSelector,
   (showState) => showState.query
@@ -34,4 +36,9 @@ export const showsSelector = createSelector(
   queryShowMapSelector,
   (showMap, query, queryShowsMap) =>
     queryShowsMap[query]?.map((showId) => showMap[showId])
+);
+
+export const castSelector = createSelector(
+  castStateSelector,
+  (castState) => castState.cast
 );
