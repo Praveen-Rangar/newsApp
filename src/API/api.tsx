@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Cast } from "../models/Cast";
 import { Show } from "../models/show";
 
 export const searchShow = async (keyword: string) => {
